@@ -1,0 +1,4 @@
+name: PunishmentsX
+version: ${project.version}
+main: me.imaginedev.punishmentsx.PunishmentsX
+api-version: 1.17
