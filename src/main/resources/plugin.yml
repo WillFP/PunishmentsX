@@ -2,3 +2,17 @@ name: PunishmentsX
 version: ${project.version}
 main: me.imaginedev.punishmentsx.PunishmentsX
 api-version: 1.17
+
+commands:
+  ban:
+    usage: /ban <player> <reason>
+
+  kick:
+    usage: /kick <player> <reason>
+
+permissions:
+  punishmentsx.ban:
+    default: op
+
+  punishmentsx.kick:
+    default: op

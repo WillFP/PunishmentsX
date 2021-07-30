@@ -11,6 +11,10 @@ public class KickPunishment extends Punishment {
             .map(MessageUtil::color)
             .collect(Collectors.joining(System.lineSeparator()));
 
+    public KickPunishment(String enforcer) {
+        super(enforcer);
+    }
+
     @Override
     public String getDefaultReason() {
         return "";
@@ -22,7 +26,7 @@ public class KickPunishment extends Punishment {
     }
 
     @Override
-    public void apply(Player player, String reason) {
+    protected void apply(Player player, String reason) {
         player.kickPlayer(this.kickMessage.replace("%reason%", reason));
     }
 }

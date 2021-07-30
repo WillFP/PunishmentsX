@@ -7,6 +7,10 @@ import org.bukkit.entity.Player;
 public class WarningPunishment extends Punishment {
     private final String warnMessage = MessageUtil.color(PunishmentsXAPI.getInstance().getMessages().getWarnedMessage());
 
+    public WarningPunishment(String enforcer) {
+        super(enforcer);
+    }
+
     @Override
     public boolean blocksJoin() {
         return false;

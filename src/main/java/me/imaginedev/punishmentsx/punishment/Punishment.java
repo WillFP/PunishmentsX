@@ -8,9 +8,11 @@ import org.bukkit.entity.Player;
 @Getter
 public abstract class Punishment {
     public abstract boolean blocksJoin();
-    public abstract void apply(Player player, String reason);
+    protected abstract void apply(Player player, String reason);
 
-    protected String getDefaultReason() {
+    private final String enforcer;
+
+    public String getDefaultReason() {
         return "";
     }
 
