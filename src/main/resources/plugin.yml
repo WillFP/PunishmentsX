@@ -5,13 +5,25 @@ api-version: 1.17
 
 commands:
   ban:
-    usage: /ban <player> <reason>
+    usage: /ban <player> <reason> <?duration> <?min/day/month>
+
+  ipban:
+    usage: /ipban <player> <reason> <?duration> <?min/day/month>
+
+  warn:
+    usage: /warn <player> <reason>
 
   kick:
     usage: /kick <player> <reason>
 
 permissions:
   punishmentsx.ban:
+    default: op
+
+  punishmentsx.ipban:
+    default: op
+
+  punishmentsx.warn:
     default: op
 
   punishmentsx.kick:

@@ -2,16 +2,13 @@ package me.imaginedev.punishmentsx.command;
 
 import me.imaginedev.punishmentsx.config.Messages;
 import me.imaginedev.punishmentsx.punishment.KickPunishment;
-import me.imaginedev.punishmentsx.punishment.Punishment;
-import me.imaginedev.punishmentsx.sql.SQLManager;
 import org.bukkit.entity.Player;
 
-public class KickCommand extends PunishmentCommand {
-    private final SQLManager manager;
+import java.time.Instant;
 
-    public KickCommand(Messages messages, SQLManager manager) {
+public class KickCommand extends PunishmentCommand {
+    public KickCommand(Messages messages) {
         super(messages);
-        this.manager = manager;
     }
 
     @Override
@@ -20,8 +17,8 @@ public class KickCommand extends PunishmentCommand {
     }
 
     @Override
-    public void punishPlayer(String sender, Player player, String reason) {
-        Punishment punishment = manager.addOrGet(player, new KickPunishment(sender));
-        punishment.applyPunishment(player, reason);
+    public void punishPlayer(String sender, Player player, String reason, Instant until) {
+        KickPunishment kickPunishment = new KickPunishment(sender);
+        kickPunishment.applyPunishment(player, reason);
     }
 }

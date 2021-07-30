@@ -76,8 +76,21 @@
         </dependency>
         <dependency>
             <groupId>com.github.ImajinDevon</groupId>
-            <artifactId>GalaxyAPI</artifactId>
-            <version>4074c0e</version>
+            <artifactId>GalaxyLib</artifactId>
+            <version>6269a38</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations-java5</artifactId>
+            <version>20.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

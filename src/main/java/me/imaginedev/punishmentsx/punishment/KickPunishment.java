@@ -1,9 +1,10 @@
 package me.imaginedev.punishmentsx.punishment;
 
-import me.imaginedev.galaxyapi.util.MessageUtil;
+import me.imaginedev.galaxylib.util.MessageUtil;
 import me.imaginedev.punishmentsx.api.PunishmentsXAPI;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class KickPunishment extends Punishment {
@@ -16,17 +17,12 @@ public class KickPunishment extends Punishment {
     }
 
     @Override
-    public String getDefaultReason() {
-        return "";
+    public PunishmentType getType() {
+        return PunishmentType.KICK;
     }
 
     @Override
-    public boolean blocksJoin() {
-        return false;
-    }
-
-    @Override
-    protected void apply(Player player, String reason) {
-        player.kickPlayer(this.kickMessage.replace("%reason%", reason));
+    public void applyPunishment(Player player, String reason) {
+        player.kickPlayer(this.kickMessage.replace("%reason%", Optional.ofNullable(reason).orElse("Unspecified")));
     }
 }

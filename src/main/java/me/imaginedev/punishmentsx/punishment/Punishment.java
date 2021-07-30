@@ -1,20 +1,15 @@
 package me.imaginedev.punishmentsx.punishment;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-@AllArgsConstructor
-@Getter
+@RequiredArgsConstructor
 public abstract class Punishment {
-    public abstract boolean blocksJoin();
-    protected abstract void apply(Player player, String reason);
+    public abstract PunishmentType getType();
 
-    private final String enforcer;
-
-    public String getDefaultReason() {
-        return "";
-    }
+    private @Getter final String enforcer;
 
     /**
      * Apply a punishment to the player with the provided reason.
@@ -22,16 +17,5 @@ public abstract class Punishment {
      * @param player the player
      * @param reason the reason
      */
-    public final void applyPunishment(Player player, String reason) {
-        this.apply(player, reason);
-    }
-
-    /**
-     * Apply a punishment to the player with the default reason.
-     *
-     * @param player the player
-     */
-    public final void applyPunishment(Player player) {
-        this.apply(player, getDefaultReason());
-    }
+    public void applyPunishment(Player player, @Nullable String reason) {}
 }

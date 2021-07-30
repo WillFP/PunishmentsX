@@ -1,13 +1,19 @@
 package me.imaginedev.punishmentsx.sql;
 
 import me.imaginedev.punishmentsx.punishment.Punishment;
+import me.imaginedev.punishmentsx.punishment.PunishmentType;
+import me.imaginedev.punishmentsx.punishment.TemporaryPunishment;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * SQL and player punishment manager class.
+ */
 public class SQLManager {
-    private final Map<UUID, List<Punishment>> punishments = new HashMap<>();
+    private final Map<UUID, List<Punishment>> punishmentMap = new HashMap<>();
 
     /**
      * Query and get the SQL data.
@@ -23,38 +29,57 @@ public class SQLManager {
      * @return the punishments
      */
     public List<Punishment> getPunishments(Player player) {
-        return punishments.get(player.getUniqueId());
+        return punishmentMap.get(player.getUniqueId());
     }
 
     /**
-     * Add a punishment or get an existing one from a player.
+     * Get an active punishment for a player.
      *
      * @param player the player
-     * @param punishment the default punishment
+     * @param punishmentType the punishment type to match
      *
-     * @return the punishment
+     * @return the punishment, or null if there is not one active
      */
-    public Punishment addOrGet(Player player, Punishment punishment) {
-        List<Punishment> punishments = getPunishments(player);
-        Optional<Punishment> optional = punishments.stream().filter(punishment::equals).findFirst();
+    public TemporaryPunishment getActivePunishment(Player player, PunishmentType punishmentType) {
+        for (Punishment punishment : getPunishments(player)) {
+            if (punishment.getType() == punishmentType && punishment instanceof TemporaryPunishment) {
+                TemporaryPunishment temp = (TemporaryPunishment) punishment;
+                if (temp.isActive()) return temp;
+            }
+        }
+        return null;
+    }
 
-        if (!optional.isPresent()) punishments.add(punishment);
-        else punishment = optional.get();
+    /**
+     * Add a punishment to a player.
+     *
+     * @param player the player
+     * @param punishment the punishment
+     */
+    public void addPunishment(OfflinePlayer player, Punishment punishment) {
+        List<Punishment> punishments = punishmentMap.get(player.getUniqueId());
+        if (punishments == null) punishments = new ArrayList<>();
 
-        return punishment;
+        punishments.add(punishment);
     }
 
     /**
      * Whether or not to block a player from joining.
      *
-     * @param player the player
+     * @param player the player uuid
      * @param consumer the consumer
      */
-    public void isBlockJoin(Player player, Consumer<Punishment> consumer) {
-        Punishment punishment = punishments.get(player.getUniqueId()).stream()
-            .filter(Punishment::blocksJoin)
-            .findFirst().orElse(null);
+    public void isBlockJoin(UUID player, Consumer<TemporaryPunishment> consumer) {
+        for (Punishment punishment : punishmentMap.get(player)) {
+            if (punishment.getType() == PunishmentType.BAN || punishment.getType() == PunishmentType.IP_BAN) {
+                TemporaryPunishment temporaryPunishment = (TemporaryPunishment) punishment;
 
-        consumer.accept(punishment);
+                if (temporaryPunishment.isActive()) {
+                    consumer.accept(temporaryPunishment);
+                    return;
+                }
+            }
+        }
+        consumer.accept(null);
     }
 }

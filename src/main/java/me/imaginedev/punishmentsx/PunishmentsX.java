@@ -1,9 +1,8 @@
 package me.imaginedev.punishmentsx;
 
-import me.imaginedev.galaxyapi.GalaxyCore;
+import me.imaginedev.galaxylib.plugin.GalaxyCore;
 import me.imaginedev.punishmentsx.api.PunishmentsXAPI;
-import me.imaginedev.punishmentsx.command.BanCommand;
-import me.imaginedev.punishmentsx.command.KickCommand;
+import me.imaginedev.punishmentsx.command.*;
 import me.imaginedev.punishmentsx.config.Messages;
 import me.imaginedev.punishmentsx.listener.PlayerEventListener;
 import me.imaginedev.punishmentsx.sql.SQLManager;
@@ -19,7 +18,7 @@ public final class PunishmentsX extends GalaxyCore {
 
         getServer().getScheduler().runTaskLaterAsynchronously(this, runnable, 0);
 
-        new PunishmentsXAPI(messages);
+        new PunishmentsXAPI(messages, manager);
 
         registerCommands(messages, manager);
         getServer().getPluginManager().registerEvents(new PlayerEventListener(manager), this);
@@ -27,6 +26,9 @@ public final class PunishmentsX extends GalaxyCore {
 
     private void registerCommands(Messages messages, SQLManager manager) {
         getCommand("ban").setExecutor(new BanCommand(messages, manager));
-        getCommand("kick").setExecutor(new KickCommand(messages, manager));
+        getCommand("kick").setExecutor(new KickCommand(messages));
+        getCommand("ipban").setExecutor(new IPBanCommand(messages, manager));
+        getCommand("warn").setExecutor(new WarningCommand(messages, manager));
+        getCommand("mute").setExecutor(new MuteCommand(messages, manager));
     }
 }
